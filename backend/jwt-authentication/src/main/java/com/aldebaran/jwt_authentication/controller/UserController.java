@@ -39,7 +39,19 @@ public class UserController {
     }
 
     @PostMapping("/register")
-    public ResponseEntity<UserModel> register(@RequestBody RegisterUserDto registerUserDto) {
-        return new ResponseEntity<>(authService.register(registerUserDto), HttpStatus.CREATED);
+    public ResponseEntity<?> register(@RequestBody RegisterUserDto registerUserDto) {
+        try {
+            UserModel newUser = authService.register(registerUserDto);
+
+            return new ResponseEntity<>(newUser, HttpStatus.CREATED);
+        } catch (IllegalStateException e) {
+            return new ResponseEntity<>(e.getMessage(), HttpStatus.CONFLICT);
+        }
+
+    }
+
+    @PostMapping("/test")
+    public ResponseEntity<String> test() {
+        return new ResponseEntity<>("You successfully login!", HttpStatus.OK);
     }
 }
