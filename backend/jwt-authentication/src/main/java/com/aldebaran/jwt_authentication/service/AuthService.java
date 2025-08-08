@@ -2,6 +2,7 @@ package com.aldebaran.jwt_authentication.service;
 
 import com.aldebaran.jwt_authentication.dtos.LoginUserDto;
 import com.aldebaran.jwt_authentication.dtos.RegisterUserDto;
+import com.aldebaran.jwt_authentication.exception.EmailAlreadyUsedException;
 import com.aldebaran.jwt_authentication.model.MemberType;
 import com.aldebaran.jwt_authentication.model.UserModel;
 import com.aldebaran.jwt_authentication.repository.UserRepo;
@@ -26,7 +27,7 @@ public class AuthService {
 
     public UserModel register(RegisterUserDto registerUserDto) {
         if (userRepo.existsByEmail(registerUserDto.getEmail())) {
-            throw new IllegalStateException("Email has been used");
+            throw new EmailAlreadyUsedException("Email has been used");
         }
 
         UserModel userModel = new UserModel()
