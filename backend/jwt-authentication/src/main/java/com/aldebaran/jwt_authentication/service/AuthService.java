@@ -26,7 +26,7 @@ public class AuthService {
 
     public UserModel register(RegisterUserDto registerUserDto) {
         if (userRepo.existsByEmail(registerUserDto.getEmail())) {
-            throw new RuntimeException("Email has been used");
+            throw new IllegalStateException("Email has been used");
         }
 
         UserModel userModel = new UserModel()
