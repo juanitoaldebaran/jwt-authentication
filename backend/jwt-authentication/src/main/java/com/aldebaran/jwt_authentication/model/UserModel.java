@@ -52,6 +52,9 @@ public class UserModel implements UserDetails {
         this.updatedAt = updatedAt;
     }
 
+    public UserModel() {
+    }
+
     public Integer getId() {
         return id;
     }
