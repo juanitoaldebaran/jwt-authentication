@@ -1,8 +1,6 @@
 package com.aldebaran.jwt_authentication.service;
 
-import com.aldebaran.jwt_authentication.model.UserModel;
 import io.jsonwebtoken.Claims;
-import io.jsonwebtoken.Jws;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.io.Decoders;
 import io.jsonwebtoken.security.Keys;
