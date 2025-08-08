@@ -2,6 +2,7 @@ package com.aldebaran.jwt_authentication.controller;
 
 import com.aldebaran.jwt_authentication.dtos.LoginUserDto;
 import com.aldebaran.jwt_authentication.dtos.RegisterUserDto;
+import com.aldebaran.jwt_authentication.exception.EmailAlreadyUsedException;
 import com.aldebaran.jwt_authentication.model.UserModel;
 import com.aldebaran.jwt_authentication.response.LoginResponse;
 import com.aldebaran.jwt_authentication.service.AuthService;
@@ -9,7 +10,6 @@ import com.aldebaran.jwt_authentication.service.JwtService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -44,7 +44,7 @@ public class UserController {
             UserModel newUser = authService.register(registerUserDto);
 
             return new ResponseEntity<>(newUser, HttpStatus.CREATED);
-        } catch (IllegalStateException e) {
+        } catch (EmailAlreadyUsedException e) {
             return new ResponseEntity<>(e.getMessage(), HttpStatus.CONFLICT);
         }
 
