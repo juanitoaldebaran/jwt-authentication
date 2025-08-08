@@ -1,0 +1,71 @@
+package com.aldebaran.jwt_authentication.service;
+
+import com.aldebaran.jwt_authentication.model.UserModel;
+import io.jsonwebtoken.Claims;
+import io.jsonwebtoken.Jws;
+import io.jsonwebtoken.Jwts;
+import io.jsonwebtoken.io.Decoders;
+import io.jsonwebtoken.security.Keys;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.security.core.userdetails.UserDetails;
+
+import java.security.Key;
+import java.util.Date;
+import java.util.HashMap;
+import java.util.Map;
+import java.util.function.Function;
+
+public class JwtService {
+
+    @Value("${jwt.secret}")
+    private String JWT_SECRET_KEY;
+
+    @Value("${jwt.expiration}")
+    private Long expirationTime;
+
+    public boolean isTokenValid(String token, UserDetails userDetails) {
+        String username = extractUsername(token);
+
+        return (username.equals(userDetails.getUsername()) && !isTokenExpired(token));
+    }
+    public boolean isTokenExpired(String token) {
+        return extractExpirationTime(token).before(new Date());
+    }
+    public String extractUsername(String token) {
+        return extractClaims(token, Claims::getSubject);
+    }
+    public Date extractExpirationTime(String token) {
+        return extractClaims(token, Claims::getExpiration);
+    }
+    public Claims extractAllClaims(String token) {
+        return Jwts.parser()
+                .setSigningKey(getSigningKey())
+                .build()
+                .parseClaimsJws(token)
+                .getBody();
+    }
+    public <T> T extractClaims(String token, Function<Claims, T> claimsResolver) {
+        final Claims claims = extractAllClaims(token);
+
+        return claimsResolver.apply(claims);
+    }
+    public String generateToken(UserDetails userDetails) {
+        return generateToken(new HashMap<>(), userDetails);
+    }
+    public String generateToken(Map<String, Object> claims, UserDetails userDetails) {
+        return buildJwtToken(claims, userDetails);
+    }
+    public String buildJwtToken(Map<String, Object> claims, UserDetails userDetails) {
+        return Jwts.builder()
+                .setClaims(claims)
+                .setSubject(userDetails.getUsername())
+                .setIssuedAt(new Date(System.currentTimeMillis()))
+                .setExpiration(new Date(System.currentTimeMillis() + expirationTime))
+                .signWith(getSigningKey())
+                .compact();
+    }
+    private Key getSigningKey() {
+       byte[] secretKey = Decoders.BASE64.decode(JWT_SECRET_KEY);
+       return Keys.hmacShaKeyFor(secretKey);
+    }
+}
