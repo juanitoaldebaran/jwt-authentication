@@ -8,6 +8,8 @@ public class RegisterUserDto {
     private String firstName;
     private String lastName;
     private MemberType memberType;
+
+    public RegisterUserDto() {}
     public RegisterUserDto(String email, String password, String firstName, String lastName, MemberType memberType) {
         this.email = email;
         this.password = password;

@@ -1,6 +1,8 @@
 package com.aldebaran.jwt_authentication.model;
 
 import jakarta.persistence.*;
+import lombok.NoArgsConstructor;
+import lombok.RequiredArgsConstructor;
 import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UpdateTimestamp;
 import org.springframework.security.core.GrantedAuthority;
