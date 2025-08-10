@@ -1,6 +1,6 @@
 import { useState } from "react";
 import type { RegisterRequest } from "../types/authTypes";
-import useAuth from "../hooks/useAuth";
+import {useAuth} from "../hooks/useAuth";
 import { Link, useLocation, useNavigate } from "react-router-dom";
 import LoadingSpinner from "./LoadingSpinner";
 import Alert from "./Alert";
@@ -13,14 +13,14 @@ const RegisterForm: React.FC = () => {
         lastName: "",
         email: "",
         password: "",
-        memberType: "",
+        memberType: "REGULAR",
     });
     const [confirmPassword, setConfirmPassword] = useState<string>("");
     const [showPassword, setShowPassword] = useState(false);
     const {register, isLoading} = useAuth();
     const navigate = useNavigate();
     const location = useLocation();
-    const fromPath = location.state?.fromPath.pathname || "/login";
+    const fromPath = location.state?.fromPath.pathname || "/auth/login";
     const isFormValid = !registerData.firstName || !registerData.lastName || !registerData.email || !registerData.password || !registerData.memberType;
 
     const passwordMatch = registerData.password && confirmPassword && registerData.password === confirmPassword;
@@ -38,7 +38,7 @@ const RegisterForm: React.FC = () => {
         e.preventDefault();
         setError("");
 
-        if (!isFormValid) {
+        if (isFormValid) {
             setError("Please filled an empty value");
             return;
         }

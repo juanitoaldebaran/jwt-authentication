@@ -1,7 +1,7 @@
 import { useState } from "react";
 import type { LoginRequest } from "../types/authTypes";
 import { Link, useLocation, useNavigate } from "react-router-dom";
-import useAuth from "../hooks/useAuth";
+import {useAuth }from "../hooks/useAuth";
 import LoadingSpinner from "./LoadingSpinner";
 import Alert from "./Alert";
 

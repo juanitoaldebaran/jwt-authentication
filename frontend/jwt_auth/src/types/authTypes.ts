@@ -19,7 +19,7 @@ export interface RegisterRequest {
     lastName: string;
     email: string;
     password: string;
-    memberType?: "REGULAR" | "ADMIN" | "";
+    memberType?: "REGULAR" | "ADMIN";
 }
 
 export interface LoginResponse {

@@ -2,7 +2,7 @@ import { useEffect, useState } from "react";
 import type { LoginRequest, RegisterRequest, UserModel } from "../types/authTypes";
 import authService from "../services/authService";
 
-const useAuth = () => {
+export const useAuth = () => {
     const [user, setUser] = useState<UserModel | null>(null);
     const [isLoading, setIsLoading] = useState(false);
     const [isAuthenticated, setIsAuthenticated] = useState(false);
@@ -56,15 +56,18 @@ const useAuth = () => {
         return authService.getToken();
     }
 
+    const getProtectedData = (): Promise<string> => {
+        return authService.getProtectedData();
+    }
+
     return {
         login,
         register,
         logout,
         getToken,
+        getProtectedData,
         user,
         isLoading,
         isAuthenticated,
     }
 }
-
-export default useAuth;
