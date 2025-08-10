@@ -3,6 +3,7 @@ import type { LoginRequest } from "../types/authTypes";
 import { Link, useLocation, useNavigate } from "react-router-dom";
 import useAuth from "../hooks/useAuth";
 import LoadingSpinner from "./LoadingSpinner";
+import Alert from "./Alert";
 
 const LoginForm: React.FC = () => {
     const [error, setError] = useState<string>("");
@@ -18,7 +19,7 @@ const LoginForm: React.FC = () => {
     const isFormValid = !loginData.email || !loginData.password;
    
 
-    const handleSubmit = async(e: React.FormEvent) => {
+    const handleSubmit = async (e: React.FormEvent) => {
         e.preventDefault();
         setError("");
 
@@ -30,7 +31,7 @@ const LoginForm: React.FC = () => {
         const regex = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
         if (!regex.test(loginData.email)) {
             console.error("Invalid email address");
-            setError(error);
+            setError("");
             return;
         }
 
@@ -59,6 +60,15 @@ const LoginForm: React.FC = () => {
             </div>
             
             <form onSubmit={handleSubmit} className="mt-8 space-y-8">
+                
+                {error && (
+                    <Alert
+                    message={error}
+                    type="error"
+                    onClose={() => setError("")}
+                    >
+                    </Alert>
+                )}
 
                 <div className="space-y-4">
                     <div>
