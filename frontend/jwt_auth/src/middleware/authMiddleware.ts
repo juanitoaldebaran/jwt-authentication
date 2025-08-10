@@ -31,7 +31,7 @@ api.interceptors.response.use(
                 console.log("Unauthorized Access");
                 localStorage.removeItem("token");
                 localStorage.removeItem("user");
-                window.location.href = "/login";
+                window.location.href = "/auth/login";
                 break;
             
             case 403:
@@ -57,6 +57,9 @@ api.interceptors.response.use(
             default:
                 console.error(`HTTP Status Error:`);
         }
+
+        return Promise.reject(error);
     }
+
 )
 
